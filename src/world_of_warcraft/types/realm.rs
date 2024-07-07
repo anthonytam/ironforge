@@ -20,7 +20,7 @@ pub struct RealmSummary {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Realm {
     #[serde(rename = "_links")]
-    pub links: Links,
+    pub links: Option<Links>,
     pub id: u32,
     pub region: RealmRegion,
     pub connected_realm: Href,

@@ -2,9 +2,9 @@ use std::{sync::Mutex, time::{Duration, SystemTime}};
 
 use reqwest::Response;
 
-use crate::types::BlizzardAccessTokenResponse;
+use crate::{types::BlizzardAccessTokenResponse, world_of_warcraft::types::common::Href};
 
-#[derive(strum::Display)]
+#[derive(PartialEq, Eq, Hash, Clone, Copy, strum::Display)]
 pub enum Region {
     US,
     EU,
@@ -13,7 +13,7 @@ pub enum Region {
 }
 
 #[allow(non_camel_case_types)]
-#[derive(strum::Display)]
+#[derive(PartialEq, Eq, Hash, Clone, Copy, strum::Display)]
 pub enum Locale {
     en_US,
     es_MX,
@@ -107,6 +107,24 @@ impl BlizzardAPIClient {
         let response_result = self.reqwest_client
                        .get(format!("{}{}?locale={}", self.get_api_url(), url_path, self.locale))
                        .header("Battlenet-Namespace", format!("{}-{}", namespace, self.region))
+                       .bearer_auth(access_token)
+                       .send()
+                       .await;
+        match response_result {
+            Ok(response) => response,
+            Err(e) => panic!("Bad response from Blizzard. {:?}", e)
+        }
+    }
+
+    pub async fn send_request_to_href(&self, href: Href) -> Response {
+        if !self.is_access_token_valid() {
+            self.get_new_access_token().await;
+        }
+        let locked_token = self.access_token.try_lock().unwrap();
+        let access_token = locked_token.as_ref().unwrap();
+
+        let response_result = self.reqwest_client
+                       .get(format!("{}&locale={}", href.href, self.locale))
                        .bearer_auth(access_token)
                        .send()
                        .await;

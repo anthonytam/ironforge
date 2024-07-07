@@ -1,5 +1,6 @@
 # Ironforge
 A rust implementation of the [Blizzard API](https://develop.battle.net/documentation).
+*** Note, this projects is still under development and breaking changes may be made without warning. ***
 
 ## Implemented APIs
 ### General API Features
