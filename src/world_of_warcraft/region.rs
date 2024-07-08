@@ -1,4 +1,4 @@
-use super::{types::region::{Region, RegionIndex}, world_of_warcraft_client::WorldOfWarcraftClient};
+use super::{types::region::{Region, RegionIndex}, WorldOfWarcraftClient};
 
 impl WorldOfWarcraftClient {
     pub async fn get_region_index(&self) -> RegionIndex {

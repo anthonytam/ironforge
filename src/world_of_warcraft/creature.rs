@@ -1,4 +1,4 @@
-use super::{types::creature::{CreatureFamily, CreatureFamilyIndex, CreatureType}, world_of_warcraft_client::WorldOfWarcraftClient};
+use super::{types::creature::{CreatureFamily, CreatureFamilyIndex, CreatureType}, WorldOfWarcraftClient};
 
 impl WorldOfWarcraftClient {
     pub async fn get_creature_family_index(&self) -> CreatureFamilyIndex {

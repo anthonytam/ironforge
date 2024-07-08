@@ -1,4 +1,4 @@
-use super::{types::wow_token::WowTokenIndex, world_of_warcraft_client::WorldOfWarcraftClient};
+use super::{types::wow_token::WowTokenIndex, WorldOfWarcraftClient};
 
 impl WorldOfWarcraftClient {
     pub async fn get_wow_token_index(&self) -> WowTokenIndex {

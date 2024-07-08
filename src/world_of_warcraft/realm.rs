@@ -1,4 +1,4 @@
-use super::{types::realm::{Realm, RealmIndex}, world_of_warcraft_client::WorldOfWarcraftClient};
+use super::{types::realm::{Realm, RealmIndex}, WorldOfWarcraftClient};
 
 impl WorldOfWarcraftClient {
     pub async fn get_realm_index(&self) -> RealmIndex {

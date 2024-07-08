@@ -9,7 +9,7 @@ pub struct ConnectedRealmsIndex {
     pub connected_realms: Vec<Href>
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct ConnectedRealm {
     #[serde(rename = "_links")]
     pub links: Links,

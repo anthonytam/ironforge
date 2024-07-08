@@ -1,4 +1,4 @@
-use super::{types::toy::{Toy, ToyIndex}, world_of_warcraft_client::WorldOfWarcraftClient};
+use super::{types::toy::{Toy, ToyIndex}, WorldOfWarcraftClient};
 
 impl WorldOfWarcraftClient {
     pub async fn get_toy_index(&self) -> ToyIndex {

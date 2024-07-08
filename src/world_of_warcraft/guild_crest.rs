@@ -1,4 +1,4 @@
-use super::{types::guild_crest::{GuildCrestBorderMedia, GuildCrestEmblemMedia, GuildCrestIndex}, world_of_warcraft_client::WorldOfWarcraftClient};
+use super::{types::guild_crest::{GuildCrestBorderMedia, GuildCrestEmblemMedia, GuildCrestIndex}, WorldOfWarcraftClient};
 
 impl WorldOfWarcraftClient {
     pub async fn get_guild_crest_index(&self) -> GuildCrestIndex {

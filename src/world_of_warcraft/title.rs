@@ -1,4 +1,4 @@
-use super::{types::title::{Title, TitleIndex}, world_of_warcraft_client::WorldOfWarcraftClient};
+use super::{types::title::{Title, TitleIndex}, WorldOfWarcraftClient};
 
 impl WorldOfWarcraftClient {
     pub async fn get_title_index(&self) -> TitleIndex {

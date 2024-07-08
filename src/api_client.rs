@@ -1,10 +1,12 @@
-use std::{sync::Mutex, time::{Duration, SystemTime}};
+use std::time::{Duration, SystemTime};
 
 use reqwest::Response;
+use serde::{Deserialize, Serialize};
+use tokio::sync::Mutex;
 
 use crate::{types::BlizzardAccessTokenResponse, world_of_warcraft::types::common::Href};
 
-#[derive(PartialEq, Eq, Hash, Clone, Copy, strum::Display)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Hash, Clone, Copy, strum::Display)]
 pub enum Region {
     US,
     EU,
@@ -13,7 +15,7 @@ pub enum Region {
 }
 
 #[allow(non_camel_case_types)]
-#[derive(PartialEq, Eq, Hash, Clone, Copy, strum::Display)]
+#[derive(Debug, Serialize, Deserialize, PartialEq, Eq, Hash, Clone, Copy, strum::Display)]
 pub enum Locale {
     en_US,
     es_MX,
@@ -149,7 +151,7 @@ mod tests {
     use std::env;
     use tokio;
 
-    use crate::world_of_warcraft::world_of_warcraft_client::WorldOfWarcraftClient;
+    use crate::world_of_warcraft::WorldOfWarcraftClient;
 
     use super::*;
 

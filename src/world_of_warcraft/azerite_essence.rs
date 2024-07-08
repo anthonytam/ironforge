@@ -1,4 +1,4 @@
-use super::{types::azerite_essence::{AzeriteEssenceDetail, AzeriteEssenceIndex, AzeriteEssenceMedia}, world_of_warcraft_client::WorldOfWarcraftClient};
+use super::{types::azerite_essence::{AzeriteEssenceDetail, AzeriteEssenceIndex, AzeriteEssenceMedia}, WorldOfWarcraftClient};
 
 
 impl WorldOfWarcraftClient {

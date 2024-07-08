@@ -1,4 +1,4 @@
-use super::{types::achievements::{AchievementCateogoryIndex, Achievement, AchievementMedia, AchievementsIndex, AchivementSummaryCategory}, world_of_warcraft_client::WorldOfWarcraftClient};
+use super::{types::achievements::{AchievementCateogoryIndex, Achievement, AchievementMedia, AchievementsIndex, AchivementSummaryCategory}, WorldOfWarcraftClient};
 
 impl WorldOfWarcraftClient {
     pub async fn get_achievement_categories_index(&self) -> AchievementCateogoryIndex {

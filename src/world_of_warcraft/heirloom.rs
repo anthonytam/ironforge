@@ -1,4 +1,4 @@
-use super::{types::heirloom::{Heirloom, HeirloomIndex}, world_of_warcraft_client::WorldOfWarcraftClient};
+use super::{types::heirloom::{Heirloom, HeirloomIndex}, WorldOfWarcraftClient};
 
 impl WorldOfWarcraftClient {
     pub async fn get_heirloom_index(&self) -> HeirloomIndex {

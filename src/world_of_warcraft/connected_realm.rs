@@ -1,4 +1,4 @@
-use super::{types::connected_realm::{ConnectedRealm, ConnectedRealmsIndex}, world_of_warcraft_client::WorldOfWarcraftClient};
+use super::{types::connected_realm::{ConnectedRealm, ConnectedRealmsIndex}, WorldOfWarcraftClient};
 
 impl WorldOfWarcraftClient {
     pub async fn get_connected_realms_index(&self) -> ConnectedRealmsIndex {

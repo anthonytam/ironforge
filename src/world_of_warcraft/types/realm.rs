@@ -17,7 +17,7 @@ pub struct RealmSummary {
     pub slug: String,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Realm {
     #[serde(rename = "_links")]
     pub links: Option<Links>,
@@ -34,7 +34,7 @@ pub struct Realm {
     pub slug: String
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct RealmRegion {
     pub key: Href,
     pub name: String,

@@ -1,4 +1,4 @@
-use super::{types::covenant::{Conduit, ConduitIndex, Covenant, CovenantIndex, CovenantMedia, Soulbind, SoulbindIndex}, world_of_warcraft_client::WorldOfWarcraftClient};
+use super::{types::covenant::{Conduit, ConduitIndex, Covenant, CovenantIndex, CovenantMedia, Soulbind, SoulbindIndex}, WorldOfWarcraftClient};
 
 impl WorldOfWarcraftClient {
     pub async fn get_covenant_index(&self) -> CovenantIndex {

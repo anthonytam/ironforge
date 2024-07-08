@@ -1,4 +1,4 @@
-use super::{types::mount::{Mount, MountIndex}, world_of_warcraft_client::WorldOfWarcraftClient};
+use super::{types::mount::{Mount, MountIndex}, WorldOfWarcraftClient};
 
 impl WorldOfWarcraftClient {
     pub async fn get_mount_index(&self) -> MountIndex {
