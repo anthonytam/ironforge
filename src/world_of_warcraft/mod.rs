@@ -1,4 +1,4 @@
-use chrono::{DateTime, FixedOffset};
+use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
 use serde::Deserialize;
 use types::common::Href;
 
@@ -32,16 +32,18 @@ impl WorldOfWarcraftClient {
         }
     }
 
-    pub async fn get_last_update(&self, href: Href) -> DateTime<FixedOffset> {
+    pub async fn get_last_update(&self, href: Href) -> DateTime<Utc> {
         let response  = self.client
                             .send_request_to_href(href)
                             .await;
         let last_modified_string = response.headers()
-                                                 .get("last-modified")
+                                                 .get("Last-Modified")
                                                  .unwrap()
                                                  .to_str()
                                                  .unwrap();
-        DateTime::parse_from_str(last_modified_string, "%a, %e %b %Y &k:%M:%S %Z").unwrap()
+        let date_slice = &last_modified_string[0..last_modified_string.len() - 4];
+        let parsed_date = NaiveDateTime::parse_from_str(date_slice, "%a, %d %h %Y %H:%M:%S").unwrap();
+        Utc.from_local_datetime(&parsed_date).unwrap()
     }
 
     pub async fn get_href_data<T: for<'de>Deserialize<'de>>(&self, href: Href) -> T {
