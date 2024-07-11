@@ -21,6 +21,7 @@ pub mod title;
 pub mod toy;
 pub mod wow_token;
 
+#[derive(Clone)]
 pub struct WorldOfWarcraftClient {
     pub client: BlizzardAPIClient
 }

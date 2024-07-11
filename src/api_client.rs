@@ -1,4 +1,4 @@
-use std::time::{Duration, SystemTime};
+use std::{sync::Arc, time::{Duration, SystemTime}};
 
 use reqwest::Response;
 use serde::{Deserialize, Serialize};
@@ -32,14 +32,15 @@ pub enum Locale {
     zh_CN,
 }
 
+#[derive(Clone)]
 pub struct BlizzardAPIClient {
     reqwest_client: reqwest::Client,
     region: Region,
     locale: Locale,
     client_id: String,
     client_secret: String,
-    access_token: Mutex<Option<String>>,
-    token_expiration: Mutex<SystemTime>,
+    access_token: Arc<Mutex<Option<String>>>,
+    token_expiration: Arc<Mutex<SystemTime>>,
 }
 
 impl BlizzardAPIClient {
@@ -50,8 +51,8 @@ impl BlizzardAPIClient {
             locale: locale,
             client_id: client_id,
             client_secret: client_secret,
-            access_token: Mutex::new(None),
-            token_expiration: Mutex::new(SystemTime::now())
+            access_token: Arc::new(Mutex::new(None)),
+            token_expiration: Arc::new(Mutex::new(SystemTime::now())),
         }
     }
 
@@ -124,7 +125,6 @@ impl BlizzardAPIClient {
         }
         let locked_token = self.access_token.try_lock().unwrap();
         let access_token = locked_token.as_ref().unwrap();
-
         let response_result = self.reqwest_client
                        .get(format!("{}&locale={}", href.href, self.locale))
                        .bearer_auth(access_token)
