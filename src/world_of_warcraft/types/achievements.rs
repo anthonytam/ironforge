@@ -48,7 +48,7 @@ pub struct Achievement {
     pub points: u32,
     pub is_account_wide: bool,
     pub criteria: AchivementCriteria,
-    pub next_achievement: AchivementNextAchievement,
+    pub next_achievement: Option<AchivementNextAchievement>,
     pub media: AchivementMedia,
     pub display_order: u32
 }
