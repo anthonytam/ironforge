@@ -104,7 +104,7 @@ impl BlizzardAPIClient {
         if !self.is_access_token_valid() {
             self.get_new_access_token().await;
         }
-        let locked_token = self.access_token.try_lock().unwrap();
+        let locked_token = self.access_token.lock().await;
         let access_token = locked_token.as_ref().unwrap();
 
         let response_result = self.reqwest_client
