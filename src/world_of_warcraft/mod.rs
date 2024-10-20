@@ -55,7 +55,7 @@ impl WorldOfWarcraftClient {
                                 .await;
         match response_result {
             Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
+            Err(e) => panic!("Failed to get a response. {:?}", e)
         }
     }
 }
