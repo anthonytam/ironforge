@@ -1,6 +1,7 @@
 use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
 use serde::Deserialize;
 use types::common::Href;
+use anyhow::Result;
 
 use crate::api_client::BlizzardAPIClient;
 
@@ -37,7 +38,8 @@ impl WorldOfWarcraftClient {
         let response  = self.client
                             .send_request_to_href(href)
                             .await;
-        let last_modified_string = response.headers()
+        let response_unwrapped = response.unwrap();
+        let last_modified_string = response_unwrapped.headers()
                                                  .get("Last-Modified")
                                                  .unwrap()
                                                  .to_str()
@@ -47,15 +49,13 @@ impl WorldOfWarcraftClient {
         Utc.from_local_datetime(&parsed_date).unwrap()
     }
 
-    pub async fn get_href_data<T: for<'de>Deserialize<'de>>(&self, href: Href) -> T {
-        let response_result = self.client
+    pub async fn get_href_data<T: for<'de>Deserialize<'de>>(&self, href: Href) -> Result<T> {
+        let response = self.client
                                 .send_request_to_href(href)
-                                .await
+                                .await?
                                 .json::<T>()
-                                .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a response. {:?}", e)
-        }
+                                .await?;
+        
+                                Ok(response)
     }
 }

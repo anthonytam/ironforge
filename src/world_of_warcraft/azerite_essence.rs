@@ -1,42 +1,36 @@
 use super::{types::azerite_essence::{AzeriteEssenceDetail, AzeriteEssenceIndex, AzeriteEssenceMedia}, WorldOfWarcraftClient};
-
+use anyhow::Result;
 
 impl WorldOfWarcraftClient {
-    pub async fn get_azerite_essence_index(&self) -> AzeriteEssenceIndex {
-        let response_result = self.client
+    pub async fn get_azerite_essence_index(&self) -> Result<AzeriteEssenceIndex> {
+        let response = self.client
                                 .send_request(format!("/data/wow/azerite-essence/index"), "static")
-                                .await
+                                .await?
                                 .json::<AzeriteEssenceIndex>()
-                                .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a response. {:?}", e)
-        }
+                                .await?;
+
+                            Ok(response)
     }
 
-    pub async fn get_azerite_essence(&self, id: u32) -> AzeriteEssenceDetail {
-        let response_result = self.client
+    pub async fn get_azerite_essence(&self, id: u32) -> Result<AzeriteEssenceDetail> {
+        let response = self.client
                                 .send_request(format!("/data/wow/azerite-essence/{}", id), "static")
-                                .await
+                                .await?
                                 .json::<AzeriteEssenceDetail>()
-                                .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a response. {:?}", e)
-        }
+                                .await?;
+        
+                                Ok(response)
     }
 
     // TODO: Implement Azerite Essence Search
 
-    pub async fn get_azerite_essence_media(&self, id: u32) -> AzeriteEssenceMedia {
-        let response_result = self.client
+    pub async fn get_azerite_essence_media(&self, id: u32) -> Result<AzeriteEssenceMedia> {
+        let response = self.client
                                 .send_request(format!("/data/wow/media/azerite-essence/{}", id), "static")
-                                .await
+                                .await?
                                 .json::<AzeriteEssenceMedia>()
-                                .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a response. {:?}", e)
-        }
+                                .await?;
+                            
+                                Ok(response)
     }
 }
