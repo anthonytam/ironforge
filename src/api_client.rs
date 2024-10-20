@@ -1,7 +1,9 @@
 use std::{sync::Arc, time::{Duration, SystemTime}};
 
+use anyhow::Result;
 use reqwest::Response;
 use serde::{Deserialize, Serialize};
+use thiserror::Error;
 use tokio::sync::Mutex;
 
 use crate::{types::BlizzardAccessTokenResponse, world_of_warcraft::types::common::Href};
@@ -44,6 +46,14 @@ pub struct BlizzardAPIClient {
     token_expiration: Arc<Mutex<SystemTime>>,
 }
 
+#[derive(Error, Debug)]
+pub enum BlizzardAPIClientError {
+    #[error("Failed to featch a new access token from Blizzard. {0}")]
+    AccessTokenFetchError(String),
+    #[error("Failed to deserialize the access token response from Blizzard. {0}")]
+    AccessTokenDeserializationError(String),
+}
+
 impl BlizzardAPIClient {
     pub fn new( client_id: String, client_secret: String, region: Region, locale: Locale) -> BlizzardAPIClient {
         BlizzardAPIClient {
@@ -57,7 +67,7 @@ impl BlizzardAPIClient {
         }
     }
 
-    async fn get_new_access_token (&self) {
+    async fn get_new_access_token (&self) -> Result<bool, BlizzardAPIClientError> {
         let new_token_response = self.reqwest_client
                                                 .post(self.get_token_url())
                                                 .form(&[("grant_type", "client_credentials")])
@@ -68,73 +78,64 @@ impl BlizzardAPIClient {
             Ok(new_token) => {
                 match new_token.json::<BlizzardAccessTokenResponse>().await {
                     Ok(blizzard_access_token_response) => {
-                        if let Ok(mut expiration) = self.token_expiration.try_lock() {
-                            *expiration = SystemTime::now().checked_add(Duration::from_secs(blizzard_access_token_response.expires_in)).unwrap()
-                        }
-                        if let Ok(mut access_token) = self.access_token.try_lock() {
-                            *access_token = Some(blizzard_access_token_response.access_token);
-                        }
+                        let mut expiration = self.token_expiration.lock().await;
+                        *expiration = SystemTime::now().checked_add(Duration::from_secs(blizzard_access_token_response.expires_in)).unwrap();
+                        let mut access_token = self.access_token.lock().await;
+                        *access_token = Some(blizzard_access_token_response.access_token);
+                        Ok(true)
                     }
-                    Err(e) => panic!("Failed to deserialize access token request {:?}", e)
+                    Err(e) => Err(BlizzardAPIClientError::AccessTokenDeserializationError(format!("{:?}", e)))
                 }
             },
-            Err(e) => panic!("Failed to get a new access token {:?}", e)
+            Err(e) => Err(BlizzardAPIClientError::AccessTokenFetchError(format!("{:?}", e)))
         }
     }
 
-    fn is_access_token_valid (&self) -> bool {
-        match self.access_token.try_lock() {
-            Ok(token) => match token.as_ref() {
+    async fn is_access_token_valid (&self) -> bool {
+        match self.access_token.lock().await {
+            token => match token.as_ref() {
                 None => false,
                 Some(_) => {
-                    self.is_token_expired()
+                    self.is_token_expired().await
                 }
             }
-            Err(e) => panic!("{}",e.to_string())
         }
     }
 
-    fn is_token_expired (&self) -> bool {
-        match self.token_expiration.try_lock() {
-            Ok(expiration_time) => expiration_time.le(&SystemTime::now()),
-            Err(e) => panic!("{}",e.to_string())
-        }
+    async fn is_token_expired (&self) -> bool {
+        self.token_expiration.lock().await.le(&SystemTime::now())
     }
 
-    pub async fn send_request(&self, url_path: String, namespace: &str) -> Response {
-        if !self.is_access_token_valid() {
-            self.get_new_access_token().await;
+    pub async fn send_request(&self, url_path: String, namespace: &str) -> Result<Response> {
+        if !self.is_access_token_valid().await {
+            self.get_new_access_token().await?;
         }
         let locked_token = self.access_token.lock().await;
         let access_token = locked_token.as_ref().unwrap();
 
-        let response_result = self.reqwest_client
+        let response = self.reqwest_client
                        .get(format!("{}{}?locale={}", self.get_api_url(), url_path, self.locale))
                        .header("Battlenet-Namespace", format!("{}-{}", namespace, self.region))
                        .bearer_auth(access_token)
                        .send()
-                       .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Bad response from Blizzard. {:?}", e)
-        }
+                       .await?;
+
+        Ok(response)
     }
 
-    pub async fn send_request_to_href(&self, href: Href) -> Response {
-        if !self.is_access_token_valid() {
-            self.get_new_access_token().await;
+    pub async fn send_request_to_href(&self, href: Href) -> Result<Response> {
+        if !self.is_access_token_valid().await {
+            self.get_new_access_token().await?;
         }
         let locked_token = self.access_token.lock().await;
         let access_token = locked_token.as_ref().unwrap();
-        let response_result = self.reqwest_client
+        let response = self.reqwest_client
                        .get(format!("{}&locale={}", href.href, self.locale))
                        .bearer_auth(access_token)
                        .send()
-                       .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Bad response from Blizzard. {:?}", e)
-        }
+                       .await?;
+        
+                       Ok(response)
     }
 
     fn get_api_url(&self) -> String {

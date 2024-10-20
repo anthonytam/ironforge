@@ -4,7 +4,7 @@ A rust implementation of the [Blizzard API](https://develop.battle.net/documenta
 
 ## Implemented APIs
 ### General API Features
-- [ ] Proper error management
+- [X] Proper error management
 - [X] US/EU/KR/TW region API endpoints
 - [X] CN region API endpoints
 - [X] Namespace identification
@@ -20,7 +20,7 @@ Game Data API:
 - [X] Achivements
 - [X] Auction House
 - [X] Azerite Essence
-- [X] Connected Realm
+- [X] Connected Realm (Note: Search not implemented yet)
 - [X] Covenant
 - [X] Creature
 - [X] Guild Crest
