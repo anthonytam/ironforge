@@ -12,6 +12,7 @@ pub enum Region {
     EU,
     KR,
     TW,
+    CN,
 }
 
 #[allow(non_camel_case_types)]
@@ -137,11 +138,17 @@ impl BlizzardAPIClient {
     }
 
     fn get_api_url(&self) -> String {
-        format!("https://{}.api.blizzard.com", self.region)
+        match self.region {
+            Region::US | Region::EU | Region::KR | Region::TW => format!("https://{}.api.blizzard.com", self.region),
+            Region::CN => "https://gateway.battlenet.com.cn".to_string(),
+        }
     }
 
     fn get_token_url(&self) -> String {
-        format!("https://oauth.battle.net/token")
+        match self.region {
+            Region::US | Region::EU | Region::KR | Region::TW => "https://oauth.battle.net/token".to_string(),
+            Region::CN => "https://oauth.battlenet.com.cn/token".to_string(),
+        }
     }
 }
 
