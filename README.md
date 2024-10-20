@@ -6,12 +6,12 @@ A rust implementation of the [Blizzard API](https://develop.battle.net/documenta
 ### General API Features
 - [X] Proper error management
 - [X] US/EU/KR/TW region API endpoints
-- [ ] CN region API endpoints
+- [X] CN region API endpoints
 - [X] Namespace identification
 - [X] Locale identification
 ### BattleNet OAuth API
 - [X] All regions except CN
-- [ ] CN region endpoint
+- [X] CN region endpoint
 ### World of Warcraft API
 <details>
 <summary>13/53 APIs Implemented</summary>
