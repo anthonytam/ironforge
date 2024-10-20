@@ -1,27 +1,24 @@
 use super::{types::toy::{Toy, ToyIndex}, WorldOfWarcraftClient};
+use anyhow::Result;
 
 impl WorldOfWarcraftClient {
-    pub async fn get_toy_index(&self) -> ToyIndex {
+    pub async fn get_toy_index(&self) -> Result<ToyIndex> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/toy/index"), "static")
-                                .await
+                                .await?
                                 .json::<ToyIndex>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 
-    pub async fn get_toy(&self, id: u32) -> Toy {
+    pub async fn get_toy(&self, id: u32) -> Result<Toy> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/toy/{}", id), "static")
-                                .await
+                                .await?
                                 .json::<Toy>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 }

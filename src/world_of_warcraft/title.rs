@@ -1,27 +1,24 @@
 use super::{types::title::{Title, TitleIndex}, WorldOfWarcraftClient};
+use anyhow::Result;
 
 impl WorldOfWarcraftClient {
-    pub async fn get_title_index(&self) -> TitleIndex {
+    pub async fn get_title_index(&self) -> Result<TitleIndex> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/title/index"), "static")
-                                .await
+                                .await?
                                 .json::<TitleIndex>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 
-    pub async fn get_title(&self, id: u32) -> Title {
+    pub async fn get_title(&self, id: u32) -> Result<Title> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/title/{}", id), "static")
-                                .await
+                                .await?
                                 .json::<Title>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 }

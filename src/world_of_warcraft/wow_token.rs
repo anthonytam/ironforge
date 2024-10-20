@@ -1,15 +1,14 @@
 use super::{types::wow_token::WowTokenIndex, WorldOfWarcraftClient};
+use anyhow::Result;
 
 impl WorldOfWarcraftClient {
-    pub async fn get_wow_token_index(&self) -> WowTokenIndex {
+    pub async fn get_wow_token_index(&self) -> Result<WowTokenIndex> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/token/index"), "dynamic")
-                                .await
+                                .await?
                                 .json::<WowTokenIndex>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 }

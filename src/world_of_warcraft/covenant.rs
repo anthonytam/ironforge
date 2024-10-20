@@ -1,88 +1,75 @@
 use super::{types::covenant::{Conduit, ConduitIndex, Covenant, CovenantIndex, CovenantMedia, Soulbind, SoulbindIndex}, WorldOfWarcraftClient};
+use anyhow::Result;
 
 impl WorldOfWarcraftClient {
-    pub async fn get_covenant_index(&self) -> CovenantIndex {
+    pub async fn get_covenant_index(&self) -> Result<CovenantIndex> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/covenant/index"), "static")
-                                .await
+                                .await?
                                 .json::<CovenantIndex>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 
-    pub async fn get_covenant(&self, id: u32) -> Covenant {
+    pub async fn get_covenant(&self, id: u32) -> Result<Covenant> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/covenant/{}", id), "static")
-                                .await
+                                .await?
                                 .json::<Covenant>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 
-    pub async fn get_covenant_media(&self, id: u32) -> CovenantMedia {
+    pub async fn get_covenant_media(&self, id: u32) -> Result<CovenantMedia> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/media/covenant/{}", id), "static")
-                                .await
+                                .await?
                                 .json::<CovenantMedia>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 
-    pub async fn get_soulbind_index(&self) -> SoulbindIndex {
+    pub async fn get_soulbind_index(&self) -> Result<SoulbindIndex> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/covenant/soulbind/index"), "static")
-                                .await
+                                .await?
                                 .json::<SoulbindIndex>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 
-    pub async fn get_soulbind(&self, id: u32) -> Soulbind {
+    pub async fn get_soulbind(&self, id: u32) -> Result<Soulbind> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/covenant/soulbind/{}", id), "static")
-                                .await
+                                .await?
                                 .json::<Soulbind>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 
-    pub async fn get_conduit_index(&self) -> ConduitIndex {
+    pub async fn get_conduit_index(&self) -> Result<ConduitIndex> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/covenant/conduit/index"), "static")
-                                .await
+                                .await?
                                 .json::<ConduitIndex>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 
-    pub async fn get_conduit(&self) -> Conduit {
+    pub async fn get_conduit(&self) -> Result<Conduit> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/covenant/conduit/index"), "static")
-                                .await
+                                .await?
                                 .json::<Conduit>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
     
 }

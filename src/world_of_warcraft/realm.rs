@@ -1,28 +1,25 @@
 use super::{types::realm::{Realm, RealmIndex}, WorldOfWarcraftClient};
+use anyhow::Result;
 
 impl WorldOfWarcraftClient {
-    pub async fn get_realm_index(&self) -> RealmIndex {
+    pub async fn get_realm_index(&self) -> Result<RealmIndex> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/realm/index"), "dynamic")
-                                .await
+                                .await?
                                 .json::<RealmIndex>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 
-    pub async fn get_realm(&self, realm_slug: String) -> Realm {
+    pub async fn get_realm(&self, realm_slug: String) -> Result<Realm> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/realm/{}", realm_slug), "dynamic")
-                                .await
+                                .await?
                                 .json::<Realm>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 
     //TODO: Realm search

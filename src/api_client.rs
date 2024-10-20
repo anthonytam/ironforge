@@ -3,6 +3,7 @@ use std::{sync::Arc, time::{Duration, SystemTime}};
 use reqwest::Response;
 use serde::{Deserialize, Serialize};
 use tokio::sync::Mutex;
+use anyhow::Result;
 
 use crate::{types::BlizzardAccessTokenResponse, world_of_warcraft::types::common::Href};
 
@@ -56,6 +57,7 @@ impl BlizzardAPIClient {
         }
     }
 
+    //TODO: This shouldn't panic
     async fn get_new_access_token (&self) {
         let new_token_response = self.reqwest_client
                                                 .post(self.get_token_url())
@@ -81,6 +83,7 @@ impl BlizzardAPIClient {
         }
     }
 
+    //TODO: This shouldn't panic
     fn is_access_token_valid (&self) -> bool {
         match self.access_token.try_lock() {
             Ok(token) => match token.as_ref() {
@@ -93,6 +96,7 @@ impl BlizzardAPIClient {
         }
     }
 
+    //TODO: This shouldn't panic
     fn is_token_expired (&self) -> bool {
         match self.token_expiration.try_lock() {
             Ok(expiration_time) => expiration_time.le(&SystemTime::now()),
@@ -100,7 +104,7 @@ impl BlizzardAPIClient {
         }
     }
 
-    pub async fn send_request(&self, url_path: String, namespace: &str) -> Response {
+    pub async fn send_request(&self, url_path: String, namespace: &str) -> Result<Response> {
         if !self.is_access_token_valid() {
             self.get_new_access_token().await;
         }
@@ -113,13 +117,11 @@ impl BlizzardAPIClient {
                        .bearer_auth(access_token)
                        .send()
                        .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Bad response from Blizzard. {:?}", e)
-        }
+
+        response_result.map_err(anyhow::Error::from)
     }
 
-    pub async fn send_request_to_href(&self, href: Href) -> Response {
+    pub async fn send_request_to_href(&self, href: Href) -> Result<Response> {
         if !self.is_access_token_valid() {
             self.get_new_access_token().await;
         }
@@ -130,10 +132,8 @@ impl BlizzardAPIClient {
                        .bearer_auth(access_token)
                        .send()
                        .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Bad response from Blizzard. {:?}", e)
-        }
+        
+                       response_result.map_err(anyhow::Error::from)
     }
 
     fn get_api_url(&self) -> String {

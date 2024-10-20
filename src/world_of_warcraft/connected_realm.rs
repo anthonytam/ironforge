@@ -1,28 +1,25 @@
 use super::{types::connected_realm::{ConnectedRealm, ConnectedRealmsIndex}, WorldOfWarcraftClient};
+use anyhow::Result;
 
 impl WorldOfWarcraftClient {
-    pub async fn get_connected_realms_index(&self) -> ConnectedRealmsIndex {
+    pub async fn get_connected_realms_index(&self) -> Result<ConnectedRealmsIndex> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/connected-realm/index"), "dynamic")
-                                .await
+                                .await?
                                 .json::<ConnectedRealmsIndex>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 
-    pub async fn get_connected_realm(&self, id: u32) -> ConnectedRealm {
+    pub async fn get_connected_realm(&self, id: u32) -> Result<ConnectedRealm> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/connected-realm/{}", id), "dynamic")
-                                .await
+                                .await?
                                 .json::<ConnectedRealm>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 
     //TODO: Implement Connected Realms Search

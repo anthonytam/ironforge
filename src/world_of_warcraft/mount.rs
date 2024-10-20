@@ -1,27 +1,24 @@
 use super::{types::mount::{Mount, MountIndex}, WorldOfWarcraftClient};
+use anyhow::Result;
 
 impl WorldOfWarcraftClient {
-    pub async fn get_mount_index(&self) -> MountIndex {
+    pub async fn get_mount_index(&self) -> Result<MountIndex> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/mount/index"), "static")
-                                .await
+                                .await?
                                 .json::<MountIndex>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 
-    pub async fn get_mount(&self, id: u32) -> Mount {
+    pub async fn get_mount(&self, id: u32) -> Result<Mount> {
         let response_result = self.client
                                 .send_request(format!("/data/wow/mount/{}", id), "static")
-                                .await
+                                .await?
                                 .json::<Mount>()
                                 .await;
-        match response_result {
-            Ok(response) => response,
-            Err(e) => panic!("Failed to get a repsonse. {:?}", e)
-        }
+        
+                                response_result.map_err(anyhow::Error::from)
     }
 }
