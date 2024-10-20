@@ -138,19 +138,17 @@ impl BlizzardAPIClient {
     }
 
     fn get_api_url(&self) -> String {
-        if self.region == Region::CN {
-            return "https://gateway.battlenet.com.cn".to_string()
+        match self.region {
+            Region::US | Region::EU | Region::KR | Region::TW => "https://gateway.battlenet.com.cn".to_string(),
+            Region::CN => "https://gateway.battlenet.com.cn".to_string(),
         }
-
-        format!("https://{}.api.blizzard.com", self.region)
     }
 
     fn get_token_url(&self) -> String {
-        if self.region == Region::CN {
-            return "https://oauth.battlenet.com.cn/token".to_string()
+        match self.region {
+            Region::US | Region::EU | Region::KR | Region::TW => "https://gateway.battlenet.com.cn".to_string(),
+            Region::CN => "https://gateway.battlenet.com.cn".to_string(),
         }
-
-        "https://oauth.battle.net/token".to_string()
     }
 }
 
