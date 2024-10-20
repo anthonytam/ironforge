@@ -3,12 +3,12 @@ use anyhow::Result;
 
 impl WorldOfWarcraftClient {
     pub async fn get_wow_token_index(&self) -> Result<WowTokenIndex> {
-        let response_result = self.client
+        let response = self.client
                                 .send_request(format!("/data/wow/token/index"), "dynamic")
                                 .await?
                                 .json::<WowTokenIndex>()
-                                .await;
+                                .await?;
         
-                                response_result.map_err(anyhow::Error::from)
+                                Ok(response)
     }
 }

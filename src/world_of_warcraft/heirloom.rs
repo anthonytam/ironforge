@@ -3,22 +3,22 @@ use anyhow::Result;
 
 impl WorldOfWarcraftClient {
     pub async fn get_heirloom_index(&self) -> Result<HeirloomIndex> {
-        let response_result = self.client
+        let response = self.client
                                 .send_request(format!("/data/wow/heirloom/index"), "static")
                                 .await?
                                 .json::<HeirloomIndex>()
-                                .await;
+                                .await?;
         
-                                response_result.map_err(anyhow::Error::from)
+                                Ok(response)
     }
 
     pub async fn get_heirloom(&self, id: u32) -> Result<Heirloom> {
-        let response_result = self.client
+        let response = self.client
                                 .send_request(format!("/data/wow/heirloom/{}", id), "static")
                                 .await?
                                 .json::<Heirloom>()
-                                .await;
+                                .await?;
         
-                                response_result.map_err(anyhow::Error::from)
+                                Ok(response)
     }
 }

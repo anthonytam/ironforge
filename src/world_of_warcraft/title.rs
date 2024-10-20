@@ -3,22 +3,22 @@ use anyhow::Result;
 
 impl WorldOfWarcraftClient {
     pub async fn get_title_index(&self) -> Result<TitleIndex> {
-        let response_result = self.client
+        let response = self.client
                                 .send_request(format!("/data/wow/title/index"), "static")
                                 .await?
                                 .json::<TitleIndex>()
-                                .await;
+                                .await?;
         
-                                response_result.map_err(anyhow::Error::from)
+                                Ok(response)
     }
 
     pub async fn get_title(&self, id: u32) -> Result<Title> {
-        let response_result = self.client
+        let response = self.client
                                 .send_request(format!("/data/wow/title/{}", id), "static")
                                 .await?
                                 .json::<Title>()
-                                .await;
+                                .await?;
         
-                                response_result.map_err(anyhow::Error::from)
+                                Ok(response)
     }
 }

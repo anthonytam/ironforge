@@ -3,23 +3,23 @@ use anyhow::Result;
 
 impl WorldOfWarcraftClient {
     pub async fn get_realm_index(&self) -> Result<RealmIndex> {
-        let response_result = self.client
+        let response = self.client
                                 .send_request(format!("/data/wow/realm/index"), "dynamic")
                                 .await?
                                 .json::<RealmIndex>()
-                                .await;
+                                .await?;
         
-                                response_result.map_err(anyhow::Error::from)
+                                Ok(response)
     }
 
     pub async fn get_realm(&self, realm_slug: String) -> Result<Realm> {
-        let response_result = self.client
+        let response = self.client
                                 .send_request(format!("/data/wow/realm/{}", realm_slug), "dynamic")
                                 .await?
                                 .json::<Realm>()
-                                .await;
+                                .await?;
         
-                                response_result.map_err(anyhow::Error::from)
+                                Ok(response)
     }
 
     //TODO: Realm search

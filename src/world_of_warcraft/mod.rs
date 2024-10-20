@@ -50,12 +50,12 @@ impl WorldOfWarcraftClient {
     }
 
     pub async fn get_href_data<T: for<'de>Deserialize<'de>>(&self, href: Href) -> Result<T> {
-        let response_result = self.client
+        let response = self.client
                                 .send_request_to_href(href)
                                 .await?
                                 .json::<T>()
-                                .await;
+                                .await?;
         
-                                response_result.map_err(anyhow::Error::from)
+                                Ok(response)
     }
 }

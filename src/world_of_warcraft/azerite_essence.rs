@@ -3,34 +3,34 @@ use anyhow::Result;
 
 impl WorldOfWarcraftClient {
     pub async fn get_azerite_essence_index(&self) -> Result<AzeriteEssenceIndex> {
-        let response_result = self.client
+        let response = self.client
                                 .send_request(format!("/data/wow/azerite-essence/index"), "static")
                                 .await?
                                 .json::<AzeriteEssenceIndex>()
-                                .await;
+                                .await?;
 
-                            response_result.map_err(anyhow::Error::from)
+                            Ok(response)
     }
 
     pub async fn get_azerite_essence(&self, id: u32) -> Result<AzeriteEssenceDetail> {
-        let response_result = self.client
+        let response = self.client
                                 .send_request(format!("/data/wow/azerite-essence/{}", id), "static")
                                 .await?
                                 .json::<AzeriteEssenceDetail>()
-                                .await;
+                                .await?;
         
-                                response_result.map_err(anyhow::Error::from)
+                                Ok(response)
     }
 
     // TODO: Implement Azerite Essence Search
 
     pub async fn get_azerite_essence_media(&self, id: u32) -> Result<AzeriteEssenceMedia> {
-        let response_result = self.client
+        let response = self.client
                                 .send_request(format!("/data/wow/media/azerite-essence/{}", id), "static")
                                 .await?
                                 .json::<AzeriteEssenceMedia>()
-                                .await;
+                                .await?;
                             
-                                response_result.map_err(anyhow::Error::from)
+                                Ok(response)
     }
 }

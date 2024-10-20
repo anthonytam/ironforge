@@ -111,14 +111,14 @@ impl BlizzardAPIClient {
         let locked_token = self.access_token.try_lock().unwrap();
         let access_token = locked_token.as_ref().unwrap();
 
-        let response_result = self.reqwest_client
+        let response = self.reqwest_client
                        .get(format!("{}{}?locale={}", self.get_api_url(), url_path, self.locale))
                        .header("Battlenet-Namespace", format!("{}-{}", namespace, self.region))
                        .bearer_auth(access_token)
                        .send()
-                       .await;
+                       .await?;
 
-        response_result.map_err(anyhow::Error::from)
+        Ok(response)
     }
 
     pub async fn send_request_to_href(&self, href: Href) -> Result<Response> {
@@ -127,13 +127,13 @@ impl BlizzardAPIClient {
         }
         let locked_token = self.access_token.try_lock().unwrap();
         let access_token = locked_token.as_ref().unwrap();
-        let response_result = self.reqwest_client
+        let response = self.reqwest_client
                        .get(format!("{}&locale={}", href.href, self.locale))
                        .bearer_auth(access_token)
                        .send()
-                       .await;
+                       .await?;
         
-                       response_result.map_err(anyhow::Error::from)
+                       Ok(response)
     }
 
     fn get_api_url(&self) -> String {
