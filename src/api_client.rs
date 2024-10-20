@@ -108,7 +108,7 @@ impl BlizzardAPIClient {
         let access_token = locked_token.as_ref().unwrap();
 
         let response_result = self.reqwest_client
-                       .get(format!("{}{}?locale={}", self.get_api_url(), url_path, self.locale))
+                       .get(format!("{}{}?namespace={}&locale={}", self.get_api_url(), url_path, namespace, self.locale))
                        .header("Battlenet-Namespace", format!("{}-{}", namespace, self.region))
                        .bearer_auth(access_token)
                        .send()
