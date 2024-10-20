@@ -4,6 +4,7 @@ pub mod achievements;
 pub mod auction_house;
 pub mod azerite_essence;
 pub mod connected_realm;
+pub mod character;
 pub mod covenant;
 pub mod creature;
 pub mod guild_crest;

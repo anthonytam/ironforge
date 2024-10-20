@@ -10,6 +10,7 @@ pub mod types;
 pub mod achievements;
 pub mod auction_house;
 pub mod azerite_essence;
+pub mod character;
 pub mod connected_realm;
 pub mod covenant;
 pub mod creature;
