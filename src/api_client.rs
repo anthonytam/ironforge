@@ -48,10 +48,16 @@ pub struct BlizzardAPIClient {
 
 #[derive(Error, Debug)]
 pub enum BlizzardAPIClientError {
-    #[error("Failed to featch a new access token from Blizzard. {0}")]
+    #[error("Failed to fetch a new access token from Blizzard. {0}")]
     AccessTokenFetchError(String),
     #[error("Failed to deserialize the access token response from Blizzard. {0}")]
     AccessTokenDeserializationError(String),
+    #[error("Character does not exist.")]
+    CharacterNotFound,
+    #[error("The request to Blizzard failed.. Please report the issue on Github. {0}")]
+    BlizzardRequestError(#[from] anyhow::Error),
+    #[error("Failed to parse the response from Blizzard. Please report the issue on Github. {0}")]
+    ParseError(#[from] serde_json::Error),
 }
 
 impl BlizzardAPIClient {
@@ -174,6 +180,10 @@ mod tests {
                                                                     Locale::en_US);
 
         let wow_client = WorldOfWarcraftClient::get(blizzard_client);
-        let _achievements_index = wow_client.get_achievements_index().await;
+        let achievements_index_result = wow_client.get_achievements_index().await;
+
+        if let Ok(achievement_index) = achievements_index_result {
+            assert!(achievement_index.achievements.len() > 0);
+        }
     }
 }
