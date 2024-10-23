@@ -59,7 +59,7 @@ Profile Data API:
 - [ ] Character Appearance
 - [ ] Character Collections
 - [ ] Character Encounters
-- [ ] Character Equipment
+- [X] Character Equipment
 - [ ] Character Hunter Pets
 - [ ] Character Media
 - [ ] Character Mythic Keystone Profile
@@ -71,7 +71,7 @@ Profile Data API:
 - [ ] Character Soulbinds
 - [ ] Character Specializations
 - [ ] Character Statistics
-- [ ] Character titles
+- [ ] Character Titles
 - [ ] Guild
 </details>
 
