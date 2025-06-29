@@ -3,38 +3,38 @@ use serde::{Deserialize, Serialize};
 use super::common::{Href, Links};
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct AchievementCateogoryIndex {
+pub struct AchievementCategoryIndex {
     #[serde(rename = "_links")]
     pub links: Links,
-    pub categories: Vec<AchievementCategoryEntry>
+    pub categories: Vec<AchievementCategoryEntry>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AchievementCategoryEntry {
     pub key: Href,
     pub name: String,
-    pub id: u32
+    pub id: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct AchivementSummaryCategory {
+pub struct AchievementSummaryCategory {
     #[serde(rename = "_links")]
     pub links: Links,
-    pub achievements: Vec<AchievementSummary>
+    pub achievements: Vec<AchievementSummary>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AchievementsIndex {
     #[serde(rename = "_links")]
     pub links: Links,
-    pub achievements: Vec<AchievementSummary>
+    pub achievements: Vec<AchievementSummary>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AchievementSummary {
     pub key: Href,
     pub name: String,
-    pub id: u32
+    pub id: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -42,42 +42,42 @@ pub struct Achievement {
     #[serde(rename = "_links")]
     pub links: Links,
     pub id: u32,
-    pub category: AchivementCategory,
+    pub category: AchievementCategory,
     pub name: String,
     pub description: String,
     pub points: u32,
     pub is_account_wide: bool,
-    pub criteria: AchivementCriteria,
-    pub next_achievement: Option<AchivementNextAchievement>,
-    pub media: AchivementMedia,
-    pub display_order: u32
+    pub criteria: AchievementCriteria,
+    pub next_achievement: Option<AchievementNextAchievement>,
+    pub media: AchievementMediaReference,
+    pub display_order: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct AchivementCategory {
+pub struct AchievementCategory {
     pub key: Href,
     pub name: String,
-    pub id: u32
+    pub id: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct AchivementCriteria {
+pub struct AchievementCriteria {
     pub id: u32,
     pub description: String,
-    pub amount: u32
+    pub amount: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct AchivementNextAchievement {
+pub struct AchievementNextAchievement {
     pub key: Href,
     pub name: String,
-    pub id: u32
+    pub id: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct AchivementMedia {
+pub struct AchievementMediaReference {
     pub key: Href,
-    pub id: u32
+    pub id: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -85,12 +85,12 @@ pub struct AchievementMedia {
     #[serde(rename = "_links")]
     pub links: Links,
     pub assets: Vec<AchievementAsset>,
-    pub id: u32
+    pub id: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct AchievementAsset {
     pub key: String,
     pub value: String,
-    pub file_data_id: u32
+    pub file_data_id: u32,
 }

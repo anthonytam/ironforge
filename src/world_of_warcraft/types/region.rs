@@ -6,7 +6,7 @@ use super::common::{Href, Links};
 pub struct RegionIndex {
     #[serde(rename = "_links")]
     pub links: Links,
-    pub regions: Vec<Href>
+    pub regions: Vec<Href>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

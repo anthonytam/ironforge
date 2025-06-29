@@ -6,7 +6,7 @@ use super::common::{Href, Links, TypeNode};
 pub struct ToyIndex {
     #[serde(rename = "_links")]
     pub links: Links,
-    pub toys: Vec<ToySummary>
+    pub toys: Vec<ToySummary>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

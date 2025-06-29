@@ -7,7 +7,7 @@ pub struct Auctions {
     #[serde(rename = "_links")]
     pub links: Links,
     pub connected_realm: Option<Href>,
-    pub auctions: Vec<Auction>
+    pub auctions: Vec<Auction>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -18,7 +18,7 @@ pub struct Auction {
     pub buyout: Option<u64>,
     pub quantity: u64,
     pub unit_price: Option<u64>,
-    pub time_left: AuctionTimeLeft
+    pub time_left: AuctionTimeLeft,
 }
 
 #[allow(non_camel_case_types)]
@@ -39,7 +39,7 @@ pub struct AuctionItem {
     pub pet_breed_id: Option<u32>,
     pub pet_level: Option<u32>,
     pub pet_quality_id: Option<u32>,
-    pub pet_species_id: Option<u32>
+    pub pet_species_id: Option<u32>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -47,5 +47,5 @@ pub struct AuctionItemModifier {
     #[serde(rename = "type")]
     pub modifier_type: u32,
     #[serde(rename = "value")]
-    pub modifier_value: u32
+    pub modifier_value: u32,
 }

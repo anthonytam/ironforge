@@ -6,14 +6,14 @@ use super::common::{Color, Href, Links, TypeNode};
 pub struct HeirloomIndex {
     #[serde(rename = "_links")]
     pub links: Links,
-    pub heirlooms: Vec<HeirloomSummary>
+    pub heirlooms: Vec<HeirloomSummary>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct HeirloomSummary {
     pub key: Href,
     pub name: String,
-    pub id: u32
+    pub id: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

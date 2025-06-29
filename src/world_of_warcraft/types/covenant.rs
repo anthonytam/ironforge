@@ -1,70 +1,32 @@
 use serde::{Deserialize, Serialize};
 
-use super::common::{Href, Links, TypeNode};
+use super::common::{Href, Links};
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct CovenantIndex {
+pub struct CovenantIndexResponse {
     #[serde(rename = "_links")]
     pub links: Links,
-    pub covenants: Vec<CovenantSummary>
+    pub covenants: Vec<CovenantSummary>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CovenantSummary {
     pub key: Href,
     pub name: String,
-    pub id: u32
+    pub id: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Covenant {
+pub struct CovenantResponse {
     #[serde(rename = "_links")]
     pub links: Links,
     pub id: u32,
     pub name: String,
     pub description: String,
+    pub signature_ability: CovenantSignatureAbility,
+    pub class_abilities: Vec<CovenantClassAbility>,
+    pub soulbinds: Vec<CovenantSoulbind>,
     pub renown_rewards: Vec<CovenantRenownReward>,
-    pub signature_ability: Option<CovenantSignatueAbility>,
-    pub class_ability: Option<Vec<CovenantClassAbility>>,
-    pub soulbinds: Option<Vec<SoulbindSummary>>,
-    pub media: Option<CovenantMediaSummary>
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct CovenantSignatueAbility {
-    pub id: u32,
-    pub spell_tooltip: CovenantSpellToolTip,
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct CovenantSpellToolTip {
-    pub spell: CovenantSpell,
-    pub description: String,
-    pub cast_time: String,
-    pub power_cost: Option<String>,
-    pub range: Option<String>,
-    pub cooldown: Option<String>
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct CovenantClassAbility {
-    pub id: u32,
-    pub playable_class: CovenantClass,
-    pub spell_tooltop: CovenantSpellToolTip
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct CovenantSpell {
-    pub key: Href,
-    pub name: String,
-    pub id: u32
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct CovenantClass {
-    pub key: Href,
-    pub name: String,
-    pub id: u32
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -75,119 +37,209 @@ pub struct CovenantSignatureAbility {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct SoulbindSummary{
+pub struct CovenantClassAbility {
     pub key: Href,
     pub name: String,
-    pub id: u32
+    pub id: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CovenantSoulbind {
+    pub key: Href,
+    pub name: String,
+    pub id: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CovenantRenownReward {
     pub level: u32,
-    pub reward: CovenantRenownRewardLink,
-    pub name: String,
-    pub id: u32
+    pub reward: CovenantReward,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct CovenantRenownRewardLink {
-    pub key: Href
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct CovenantMediaSummary {
+pub struct CovenantReward {
     pub key: Href,
-    pub id: u32
+    pub name: String,
+    pub id: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct CovenantMedia {
-    #[serde(rename = "_links")]
-    pub links: Links,
-    pub assets: Vec<CovenantMediaAsset>
+pub struct CovenantMediaResponse {
+    pub assets: Vec<CovenantMediaAsset>,
+    pub id: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CovenantMediaAsset {
+    #[serde(rename = "file_data_id")]
+    pub file_data_id: u32,
     pub key: String,
     pub value: String,
-    pub file_data_id: u32
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct SoulbindIndex {
+pub struct ConduitIndexResponse {
     #[serde(rename = "_links")]
     pub links: Links,
-    pub soulbinds: Vec<Soulbind>
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct Soulbind {
-    #[serde(rename = "_links")]
-    pub links: Links,
-    pub id: u32,
-    pub name: String,
-    pub covenant: Covenant,
-    pub creature: SoulbindCreature,
-    pub follower: SoulbindFollower,
-    pub talent_tree: SoulbindTalentTree
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct SoulbindCreature {
-    pub key: Href,
-    pub name: String,
-    pub id: u32
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct SoulbindFollower {
-    pub name: String,
-    pub id: u32
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct SoulbindTalentTree {
-    pub key: Href,
-    pub name: String,
-    pub id: u32
-}
-
-#[derive(Debug, Serialize, Deserialize)]
-pub struct ConduitIndex {
-    #[serde(rename = "_links")]
-    pub links: Links,
-    pub conduits: Vec<ConduitSummary>
+    pub conduits: Vec<ConduitSummary>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ConduitSummary {
     pub key: Href,
     pub name: String,
-    pub id: u32
+    pub id: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Conduit {
+pub struct ConduitResponse {
     #[serde(rename = "_links")]
     pub links: Links,
     pub id: u32,
     pub name: String,
     pub item: ConduitItem,
-    pub socket_type: TypeNode,
-    pub ranks: Vec<ConduitRank>
+    pub socket_type: ConduitSocketType,
+    pub ranks: Vec<ConduitRank>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ConduitItem {
     pub key: Href,
     pub name: String,
-    pub id: u32
+    pub id: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ConduitSocketType {
+    pub key: Href,
+    pub name: String,
+    pub id: u32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ConduitRank {
+    pub rank: u32,
+    pub spell_tooltip: ConduitSpellTooltip,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ConduitSpellTooltip {
+    pub spell: ConduitSpell,
+    pub description: String,
+    pub cast_time: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct ConduitSpell {
+    pub key: Href,
+    pub name: String,
     pub id: u32,
-    pub tier: u32,
-    pub spell_tooltop: CovenantSpellToolTip
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindIndexResponse {
+    #[serde(rename = "_links")]
+    pub links: Links,
+    pub soulbinds: Vec<SoulbindSummary>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindSummary {
+    pub key: Href,
+    pub name: String,
+    pub id: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindResponse {
+    #[serde(rename = "_links")]
+    pub links: Links,
+    pub id: u32,
+    pub name: String,
+    pub covenant: SoulbindCovenant,
+    pub creature: SoulbindCreature,
+    pub follower: SoulbindFollower,
+    pub talents: Vec<SoulbindTalent>,
+    pub tree: SoulbindTree,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindCovenant {
+    pub key: Href,
+    pub name: String,
+    pub id: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindCreature {
+    pub key: Href,
+    pub name: String,
+    pub id: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindFollower {
+    pub key: Href,
+    pub name: String,
+    pub id: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindTalent {
+    pub talent: SoulbindTalentInfo,
+    pub rank: u32,
+    pub tooltip: SoulbindTalentTooltip,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindTalentInfo {
+    pub key: Href,
+    pub name: String,
+    pub id: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindTalentTooltip {
+    pub talent: SoulbindTalentInfo,
+    pub spell_tooltip: SoulbindSpellTooltip,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindSpellTooltip {
+    pub spell: SoulbindSpell,
+    pub description: String,
+    pub cast_time: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindSpell {
+    pub key: Href,
+    pub name: String,
+    pub id: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindTree {
+    pub id: u32,
+    pub talents: Vec<SoulbindTreeTalent>,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindTreeTalent {
+    pub node: SoulbindTalentNode,
+    pub rank: u32,
+    pub tooltip: SoulbindTalentTooltip,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindTalentNode {
+    pub id: u32,
+    pub name: String,
+    pub coordinates: SoulbindCoordinates,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SoulbindCoordinates {
+    pub x: f32,
+    pub y: f32,
 }

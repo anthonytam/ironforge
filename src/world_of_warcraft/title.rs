@@ -1,24 +1,19 @@
-use super::{types::title::{Title, TitleIndex}, WorldOfWarcraftClient};
-use anyhow::Result;
+use super::{
+    WorldOfWarcraftClient,
+    types::title::{Title, TitleIndex},
+};
+use crate::api_client::{ApiRequestHelper, BlizzardAPIClientError};
 
 impl WorldOfWarcraftClient {
-    pub async fn get_title_index(&self) -> Result<TitleIndex> {
-        let response = self.client
-                                .send_request(format!("/data/wow/title/index"), "static")
-                                .await?
-                                .json::<TitleIndex>()
-                                .await?;
-        
-                                Ok(response)
+    pub async fn get_title_index(&self) -> Result<TitleIndex, BlizzardAPIClientError> {
+        self.client
+            .request_and_deserialize("/data/wow/title/index".to_string(), "static")
+            .await
     }
 
-    pub async fn get_title(&self, id: u32) -> Result<Title> {
-        let response = self.client
-                                .send_request(format!("/data/wow/title/{}", id), "static")
-                                .await?
-                                .json::<Title>()
-                                .await?;
-        
-                                Ok(response)
+    pub async fn get_title(&self, id: u32) -> Result<Title, BlizzardAPIClientError> {
+        self.client
+            .request_and_deserialize(format!("/data/wow/title/{id}"), "static")
+            .await
     }
 }

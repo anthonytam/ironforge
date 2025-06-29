@@ -3,12 +3,12 @@ use serde::{Deserialize, Serialize};
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Links {
     #[serde(rename = "self")]
-    pub self_link: Href
+    pub self_link: Href,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Href {
-    pub href: String
+    pub href: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -24,4 +24,14 @@ pub struct TypeNode {
     #[serde(rename = "type")]
     pub type_value: String,
     pub name: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct SearchResponse<T> {
+    pub page: u32,
+    pub page_size: u32,
+    pub max_page_size: u32,
+    pub page_count: u32,
+    pub result_count: u32,
+    pub results: Vec<T>,
 }

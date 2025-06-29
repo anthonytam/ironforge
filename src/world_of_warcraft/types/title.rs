@@ -6,7 +6,7 @@ use super::common::{Href, Links};
 pub struct TitleIndex {
     #[serde(rename = "_links")]
     pub links: Links,
-    pub titles: Vec<TitleSummary>
+    pub titles: Vec<TitleSummary>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

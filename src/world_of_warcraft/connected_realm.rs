@@ -1,26 +1,24 @@
-use super::{types::connected_realm::{ConnectedRealm, ConnectedRealmsIndex}, WorldOfWarcraftClient};
-use anyhow::Result;
+use super::{
+    WorldOfWarcraftClient,
+    types::connected_realm::{ConnectedRealm, ConnectedRealmsIndex},
+};
+use crate::api_client::{ApiRequestHelper, BlizzardAPIClientError};
 
 impl WorldOfWarcraftClient {
-    pub async fn get_connected_realms_index(&self) -> Result<ConnectedRealmsIndex> {
-        let response = self.client
-                                .send_request(format!("/data/wow/connected-realm/index"), "dynamic")
-                                .await?
-                                .json::<ConnectedRealmsIndex>()
-                                .await?;
-        
-                                Ok(response)
+    pub async fn get_connected_realms_index(
+        &self,
+    ) -> Result<ConnectedRealmsIndex, BlizzardAPIClientError> {
+        self.client
+            .request_and_deserialize("/data/wow/connected-realm/index".to_string(), "dynamic")
+            .await
     }
 
-    pub async fn get_connected_realm(&self, id: u32) -> Result<ConnectedRealm> {
-        let response = self.client
-                                .send_request(format!("/data/wow/connected-realm/{}", id), "dynamic")
-                                .await?
-                                .json::<ConnectedRealm>()
-                                .await?;
-        
-                                Ok(response)
+    pub async fn get_connected_realm(
+        &self,
+        id: u32,
+    ) -> Result<ConnectedRealm, BlizzardAPIClientError> {
+        self.client
+            .request_and_deserialize(format!("/data/wow/connected-realm/{id}"), "dynamic")
+            .await
     }
-
-    //TODO: Implement Connected Realms Search
 }
