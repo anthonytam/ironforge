@@ -36,3 +36,21 @@ impl WorldOfWarcraftClient {
             .await
     }
 }
+
+#[cfg(test)]
+mod character_quests_tests {
+    use crate::world_of_warcraft::test_utils::test_utils::{create_test_client, print_error};
+
+    #[tokio::test]
+    async fn test_character_quests_functions() {
+        let client = create_test_client().await;
+        
+        println!("\n=== Testing Character Quests Functions ===");
+        
+        let result = client.get_character_quests("zuljin", "panchäm").await;
+        print_error(&result, "get_character_quests");
+
+        let result = client.get_character_completed_quests("zuljin", "panchäm").await;
+        print_error(&result, "get_character_completed_quests");
+    }
+}

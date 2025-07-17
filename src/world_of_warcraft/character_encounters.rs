@@ -53,3 +53,24 @@ impl WorldOfWarcraftClient {
             .await
     }
 }
+
+#[cfg(test)]
+mod character_encounters_tests {
+    use crate::world_of_warcraft::test_utils::test_utils::{create_test_client, print_error};
+
+    #[tokio::test]
+    async fn test_character_collections_functions() {
+        let client = create_test_client().await;
+        
+        println!("\n=== Testing Character Encounters Functions ===");
+        
+        let result = client.get_character_encounters_summary("zuljin", "panchäm").await;
+        print_error(&result, "get_character_encounters_summary");
+
+        let result = client.get_character_dungeons("zuljin", "panchäm").await;
+        print_error(&result, "get_character_dungeons");
+
+        let result = client.get_character_raids("zuljin", "panchäm").await;
+        print_error(&result, "get_character_raids");
+    }
+}

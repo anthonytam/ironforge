@@ -100,3 +100,33 @@ impl WorldOfWarcraftClient {
             .await
     }
 }
+
+#[cfg(test)]
+mod character_collections_tests {
+    use crate::world_of_warcraft::test_utils::test_utils::{create_test_client, print_error};
+
+    #[tokio::test]
+    async fn test_character_collections_functions() {
+        let client = create_test_client().await;
+        
+        println!("\n=== Testing Character Collections Functions ===");
+        
+        let result = client.get_character_collections_index("zuljin", "panchäm").await;
+        print_error(&result, "get_character_collections_index");
+        
+        let result = client.get_character_mounts_collection_summary("zuljin", "panchäm").await;
+        print_error(&result, "get_character_mounts_collection_summary");
+        
+        let result = client.get_character_pets_collection_summary("zuljin", "panchäm").await;
+        print_error(&result, "get_character_pets_collection_summary");
+
+        let result = client.get_character_toys_collection_summary("zuljin", "panchäm").await;
+        print_error(&result, "get_character_toys_collection_summary");
+
+        let result = client.get_character_heirlooms_collection_summary("zuljin", "panchäm").await;
+        print_error(&result, "get_character_heirlooms_collection_summary");
+
+        let result = client.get_character_transmog_collection_summary("zuljin", "panchäm").await;
+        print_error(&result, "get_character_transmog_collection_summary");
+    }
+}

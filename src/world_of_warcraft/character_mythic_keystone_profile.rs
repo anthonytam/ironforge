@@ -39,3 +39,22 @@ impl WorldOfWarcraftClient {
             .await
     }
 }
+
+#[cfg(test)]
+mod character_mythic_keystone_profile_tests {
+    use crate::world_of_warcraft::test_utils::test_utils::{create_test_client, print_error};
+
+    #[tokio::test]
+    async fn test_character_mythic_keystone_profile_functions() {
+        let client = create_test_client().await;
+        
+        println!("\n=== Testing Character Mythic Keystone Profile Functions ===");
+        
+        let keystone_index = client.get_character_mythic_keystone_profile_index("zuljin", "panchäm").await;
+        print_error(&keystone_index, "get_character_mythic_keystone_profile_index");
+
+        let season_id = keystone_index.unwrap().seasons.first().unwrap().id;
+        let season_details = client.get_character_mythic_keystone_season_details("zuljin", "panchäm", season_id).await;
+        print_error(&season_details, "get_character_mythic_keystone_season_details");
+    }
+}

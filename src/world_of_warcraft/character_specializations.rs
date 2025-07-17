@@ -21,3 +21,18 @@ impl WorldOfWarcraftClient {
             .await
     }
 }
+
+#[cfg(test)]
+mod character_specializations_tests {
+    use crate::world_of_warcraft::test_utils::test_utils::{create_test_client, print_error};
+
+    #[tokio::test]
+    async fn test_character_specializations_functions() {
+        let client = create_test_client().await;
+        
+        println!("\n=== Testing Character Specializations Functions ===");
+        
+        let result = client.get_character_specializations_summary("zuljin", "panchäm").await;
+        print_error(&result, "get_character_specializations_summary");
+    }
+}

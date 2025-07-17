@@ -38,3 +38,21 @@ impl WorldOfWarcraftClient {
             .await
     }
 }
+
+#[cfg(test)]
+mod character_achievements_tests {
+    use crate::world_of_warcraft::test_utils::test_utils::{create_test_client, print_error};
+
+    #[tokio::test]
+    async fn test_character_achievements_functions() {
+        let client = create_test_client().await;
+        
+        println!("\n=== Testing Character Achievements Functions ===");
+        
+        let result = client.get_character_achievements_summary("zuljin", "panchäm").await;
+        print_error(&result, "get_character_achievements_summary");
+        
+        let result = client.get_character_achievement_statistics("zuljin", "panchäm").await;
+        print_error(&result, "get_character_achievement_statistics");
+    }
+}

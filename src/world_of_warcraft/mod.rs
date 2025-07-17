@@ -115,7 +115,7 @@ impl WorldOfWarcraftClient {
     #[instrument(skip(self), fields(href = %href.href), level = "info")]
     pub async fn get_href_data<T: for<'de> Deserialize<'de>>(
         &self,
-        href: Href,
+        href: &Href,
     ) -> Result<T, BlizzardAPIClientError> {
         info!("Getting HREF data for: {}", href.href);
         let result = self.client.request_href_and_deserialize(href.clone()).await;
@@ -128,3 +128,6 @@ impl WorldOfWarcraftClient {
         result
     }
 }
+
+#[cfg(test)]
+mod test_utils;

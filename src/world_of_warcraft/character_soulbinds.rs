@@ -18,3 +18,18 @@ impl WorldOfWarcraftClient {
             .await
     }
 }
+
+#[cfg(test)]
+mod character_soulbinds_tests {
+    use crate::world_of_warcraft::test_utils::test_utils::{create_test_client, print_error};
+
+    #[tokio::test]
+    async fn test_character_soulbinds_functions() {
+        let client = create_test_client().await;
+        
+        println!("\n=== Testing Character Soulbinds Functions ===");
+        
+        let result = client.get_character_soulbinds("zuljin", "panchäm").await;
+        print_error(&result, "get_character_soulbinds");
+    }
+}

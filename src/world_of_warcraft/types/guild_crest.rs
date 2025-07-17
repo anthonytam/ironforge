@@ -63,13 +63,13 @@ pub struct GuildCrestBorderEmblemResponse {
 pub struct GuildCrestComponentsIndexResponse {
     #[serde(rename = "_links")]
     pub links: Links,
-    pub borders: Vec<GuildCrestBorder>,
+    pub emblems: Vec<GuildCrestComponent>,
+    pub borders: Vec<GuildCrestComponent>,
     pub colors: GuildCrestColors,
-    pub emblems: Vec<GuildCrestBorder>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct GuildCrestBorder {
+pub struct GuildCrestComponent {
     pub id: u32,
     pub media: GuildCrestMedia,
 }
@@ -101,8 +101,8 @@ pub struct GuildCrestMedia {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GuildCrestRGBA {
-    pub a: u8,
-    pub b: u8,
-    pub g: u8,
     pub r: u8,
+    pub g: u8,
+    pub b: u8,
+    pub a: f32,
 }

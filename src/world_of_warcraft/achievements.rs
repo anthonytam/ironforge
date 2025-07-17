@@ -49,3 +49,33 @@ impl WorldOfWarcraftClient {
             .await
     }
 }
+
+#[cfg(test)]
+mod achievement_tests {
+    use crate::world_of_warcraft::test_utils::test_utils::{create_test_client, print_error};
+
+    #[tokio::test]
+    async fn test_achievement_functions() {
+        let client = create_test_client().await;
+        
+        println!("\n=== Testing Achievement Functions ===");
+        
+        let index_result = client.get_achievements_index().await;
+        print_error(&index_result, "get_achievements_index");
+        
+        let achievement_id = index_result.unwrap().achievements.first().unwrap().id;
+        let achievement_result = client.get_achievement(achievement_id).await;
+        print_error(&achievement_result, "get_achievement");
+        
+        let media_id = achievement_result.unwrap().media.id;
+        let media_result = client.get_achievement_media(media_id).await;
+        print_error(&media_result, "get_achievement_media");
+        
+        let index_result = client.get_achievement_categories_index().await;
+        print_error(&index_result, "get_achievement_categories_index");
+        
+        let category_id = index_result.unwrap().categories.first().unwrap().id;
+        let category_result = client.get_achievement_category(category_id).await;
+        print_error(&category_result, "get_achievement_category");
+    }
+}

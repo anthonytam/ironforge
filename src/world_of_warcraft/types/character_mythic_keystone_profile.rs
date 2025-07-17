@@ -7,8 +7,9 @@ pub struct CharacterMythicKeystoneProfileIndexResponse {
     #[serde(rename = "_links")]
     pub links: Links,
     pub character: CharacterMythicKeystoneProfileCharacter,
-    pub current_period: CharacterMythicKeystoneProfilePeriod,
+    pub current_period: CharacterMythicKeystoneProfileCurrentPeriod,
     pub seasons: Vec<CharacterMythicKeystoneProfileSeason>,
+    pub current_mythic_rating: CharacterMythicKeystoneProfileRating,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -37,6 +38,11 @@ pub struct CharacterMythicKeystoneProfileRealm {
     pub name: String,
     pub id: u32,
     pub slug: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CharacterMythicKeystoneProfileCurrentPeriod {
+    pub period: CharacterMythicKeystoneProfilePeriod,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -117,6 +123,7 @@ pub struct CharacterMythicKeystoneProfileDungeon {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct CharacterMythicKeystoneProfileRating {
     pub color: CharacterMythicKeystoneProfileRatingColor,
+    pub rating: f32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

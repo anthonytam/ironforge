@@ -3,7 +3,7 @@ use crate::api_client::{ApiRequestHelper, BlizzardAPIClientError};
 use super::{WorldOfWarcraftClient, types::common::SearchResponse, types::journal::*};
 
 impl WorldOfWarcraftClient {
-    pub async fn journal_encounter(
+    pub async fn get_journal_encounter(
         &self,
         journal_encounter_id: u32,
     ) -> Result<JournalEncounterResponse, BlizzardAPIClientError> {
@@ -15,7 +15,7 @@ impl WorldOfWarcraftClient {
             .await
     }
 
-    pub async fn journal_encounter_index(
+    pub async fn get_journal_encounter_index(
         &self,
     ) -> Result<JournalEncounterIndexResponse, BlizzardAPIClientError> {
         self.client
@@ -52,7 +52,7 @@ impl WorldOfWarcraftClient {
         self.client.request_and_deserialize(path, "static").await
     }
 
-    pub async fn journal_expansion(
+    pub async fn get_journal_expansion(
         &self,
         journal_expansion_id: u32,
     ) -> Result<JournalExpansionResponse, BlizzardAPIClientError> {
@@ -64,7 +64,7 @@ impl WorldOfWarcraftClient {
             .await
     }
 
-    pub async fn journal_expansion_index(
+    pub async fn get_journal_expansion_index(
         &self,
     ) -> Result<JournalExpansionIndexResponse, BlizzardAPIClientError> {
         self.client
@@ -72,7 +72,7 @@ impl WorldOfWarcraftClient {
             .await
     }
 
-    pub async fn journal_instance(
+    pub async fn get_journal_instance(
         &self,
         journal_instance_id: u32,
     ) -> Result<JournalInstanceResponse, BlizzardAPIClientError> {
@@ -84,7 +84,7 @@ impl WorldOfWarcraftClient {
             .await
     }
 
-    pub async fn journal_instance_index(
+    pub async fn get_journal_instance_index(
         &self,
     ) -> Result<JournalInstanceIndexResponse, BlizzardAPIClientError> {
         self.client
@@ -92,7 +92,7 @@ impl WorldOfWarcraftClient {
             .await
     }
 
-    pub async fn journal_instance_media(
+    pub async fn get_journal_instance_media(
         &self,
         journal_instance_id: u32,
     ) -> Result<JournalInstanceMediaResponse, BlizzardAPIClientError> {

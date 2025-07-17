@@ -2,7 +2,7 @@ use crate::api_client::{ApiRequestHelper, BlizzardAPIClientError};
 use serde::{Deserialize, Serialize};
 
 use super::WorldOfWarcraftClient;
-
+// TODO: Move these to types
 #[derive(Debug, Deserialize, Serialize)]
 pub struct CharacterAppearanceSummaryResponse {
     pub character: Character,
@@ -79,5 +79,21 @@ impl WorldOfWarcraftClient {
                 "profile",
             )
             .await
+    }
+}
+
+
+#[cfg(test)]
+mod character_appearance_tests {
+    use crate::world_of_warcraft::test_utils::test_utils::{create_test_client, print_error};
+
+    #[tokio::test]
+    async fn test_character_appearance_functions() {
+        let client = create_test_client().await;
+        
+        println!("\n=== Testing Character Appearance Functions ===");
+        
+        let result = client.get_character_appearance_summary("zuljin", "panchäm").await;
+        print_error(&result, "get_character_appearance_summary");
     }
 }

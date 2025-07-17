@@ -2,19 +2,13 @@ use super::{
     WorldOfWarcraftClient,
     types::common::SearchResponse,
     types::item::{
-        Item, ItemClassResponse, ItemIndex, ItemMediaResponse, ItemSearchParameters,
+        Item, ItemClassResponse, ItemMediaResponse, ItemSearchParameters,
         ItemSearchResponseItem, ItemSetResponse, ItemSubclassResponse,
     },
 };
 use crate::api_client::{ApiRequestHelper, BlizzardAPIClientError};
 
 impl WorldOfWarcraftClient {
-    pub async fn get_item_index(&self) -> Result<ItemIndex, BlizzardAPIClientError> {
-        self.client
-            .request_and_deserialize("/data/wow/item/index".to_string(), "static")
-            .await
-    }
-
     pub async fn get_item(&self, id: u32) -> Result<Item, BlizzardAPIClientError> {
         self.client
             .request_and_deserialize(format!("/data/wow/item/{id}"), "static")
@@ -29,6 +23,15 @@ impl WorldOfWarcraftClient {
             .request_and_deserialize(format!("/data/wow/media/item/{id}"), "static")
             .await
     }
+
+    // TODO: Add item class index
+    // pub async fn get_item_class_index(
+    //     &self,
+    // ) -> Result<ItemClassIndex, BlizzardAPIClientError> {
+    //     self.client
+    //         .request_and_deserialize("/data/wow/item-class/index".to_string(), "static")
+    //         .await
+    // }
 
     pub async fn get_item_class(
         &self,
@@ -86,3 +89,31 @@ impl WorldOfWarcraftClient {
         self.client.request_and_deserialize(path, "static").await
     }
 }
+
+#[cfg(test)]
+mod item_tests {
+    use crate::world_of_warcraft::{test_utils::test_utils::{create_test_client, print_error}, types::item::{ItemSearchParameters, ItemSearchResponseItem}};
+
+    #[tokio::test]
+    async fn test_item_functions() {
+        let client = create_test_client().await;
+        
+        println!("\n=== Testing Item Functions ===");
+        
+        let item_search = client.search_items(&ItemSearchParameters {
+            _page: Some(1),
+            locale: Some("en_US".to_string()),
+            name: Some("Thunderfury".to_string()),
+            orderby: Some("id".to_string()),
+        }).await;
+        print_error(&item_search, "search_items");
+        
+        let item_search = item_search.unwrap();
+        let item_id = client.get_href_data::<ItemSearchResponseItem>(&item_search.results.first().unwrap().key).await.unwrap().data.id;
+        let result = client.get_item(item_id).await;
+        print_error(&result, "get_item");
+
+        let result = client.get_item_media(item_id).await;
+        print_error(&result, "get_item_media");
+    }
+}   

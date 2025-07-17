@@ -40,6 +40,21 @@ pub struct CreatureFamilyMediaSummary {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+pub struct CreatureFamilyMedia {
+    #[serde(rename = "_links")]
+    pub links: Links,
+    pub assets: Vec<CreatureFamilyMediaAsset>,
+    pub id: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct CreatureFamilyMediaAsset {
+    pub key: String,
+    pub value: String,
+    pub file_data_id: u32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct CreatureTypesIndex {
     #[serde(rename = "_links")]
     pub links: Links,
